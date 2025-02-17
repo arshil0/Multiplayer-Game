@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqqsiqa7d41lm"]
+
+[ext_resource type="Script" path="res://minigames/chess/pieces/king/king.gd" id="1_28m23"]
+[ext_resource type="Texture2D" uid="uid://br27cfbhm1xw4" path="res://minigames/chess/pieces/king/red.png" id="2_rl43b"]
+
+[node name="King" type="Node2D"]
+script = ExtResource("1_28m23")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_rl43b")
+centered = false

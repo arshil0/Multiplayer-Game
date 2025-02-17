@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://bkanfoigohm0q"]
+
+[ext_resource type="Script" path="res://minigames/chess/tile.gd" id="1_kg75h"]
+[ext_resource type="Texture2D" uid="uid://bgt1pyfco743d" path="res://minigames/chess/tile_light.png" id="2_bhu0j"]
+[ext_resource type="Texture2D" uid="uid://dhgyce4q4shsa" path="res://minigames/chess/weak-highlight.png" id="3_1bw0s"]
+[ext_resource type="Texture2D" uid="uid://bsmeigt0ufev8" path="res://minigames/chess/below_part.png" id="3_kddnw"]
+[ext_resource type="Texture2D" uid="uid://cc138ba2r6q0s" path="res://minigames/chess/strong_highlight.png" id="4_yboaj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qo3oa"]
+size = Vector2(64, 64)
+
+[node name="Tile" type="Node2D"]
+z_index = -1
+script = ExtResource("1_kg75h")
+
+[node name="sprite" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("2_bhu0j")
+centered = false
+
+[node name="below_part" type="Sprite2D" parent="sprite"]
+z_index = -1
+position = Vector2(0, 64)
+texture = ExtResource("3_kddnw")
+centered = false
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(32, 32)
+shape = SubResource("RectangleShape2D_qo3oa")
+
+[node name="weak_highlight" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_1bw0s")
+centered = false
+
+[node name="strong_highlight" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("4_yboaj")
+centered = false
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

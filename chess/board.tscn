@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3xrmaleoyy8y"]
-
-[ext_resource type="Script" path="res://chess/board.gd" id="1_5slci"]
-
-[node name="board" type="Node2D"]
-scale = Vector2(0.75, 0.75)
-script = ExtResource("1_5slci")
-
-[node name="chess_pieces" type="Node2D" parent="."]

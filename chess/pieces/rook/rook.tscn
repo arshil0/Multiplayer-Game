@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca4twtpgggp6h"]
+
+[ext_resource type="Script" path="res://chess/pieces/rook/rook.gd" id="1_43lym"]
+[ext_resource type="Texture2D" uid="uid://b0i7eyp5lxjqx" path="res://chess/pieces/rook/red.png" id="2_k2l1w"]
+
+[node name="Rook" type="Node2D"]
+script = ExtResource("1_43lym")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_k2l1w")
+centered = false

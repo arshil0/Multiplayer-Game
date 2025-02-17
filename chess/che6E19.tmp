@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5konct4kgruy"]
+
+[ext_resource type="Texture2D" uid="uid://cxfgoamkqldhe" path="res://chess/sky-export.png" id="1_b5ps3"]
+[ext_resource type="PackedScene" uid="uid://d3xrmaleoyy8y" path="res://chess/board.tscn" id="2_m5pj2"]
+
+[node name="Chess" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -50
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_b5ps3")
+
+[node name="board" parent="." instance=ExtResource("2_m5pj2")]
+position = Vector2(576, 324)

@@ -137,15 +137,15 @@ func got_data(args):
 				Global.is_host = true
 				if gameState.game == "Chess":
 					get_tree().change_scene_to_file("res://minigames/chess/chess.tscn")
-				elif gameState.game == "hoverGame":
-					get_tree().change_scene_to_file("res://minigames/hover_game/hover_game.tscn")
+				elif gameState.game == "clickingGame":
+					get_tree().change_scene_to_file("res://minigames/clicking_game/clicking_game.tscn")
 					
 			elif gameState.state == "initialized" and !Global.is_host:
 				Global.is_host = false
 				if gameState.game == "Chess":
 					get_tree().change_scene_to_file("res://minigames/chess/chess.tscn")
-				elif gameState.game == "hoverGame":
-					get_tree().change_scene_to_file("res://minigames/hover_game/hover_game.tscn")
+				elif gameState.game == "clickingGame":
+					get_tree().change_scene_to_file("res://minigames/clicking_game/clicking_game.tscn")
 					
 					
 			elif gameState.state == "joined":

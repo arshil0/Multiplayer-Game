@@ -8,7 +8,7 @@ var score : float = 0
 #will be intiailized later, this is when the meteors will get spawned
 var next_spawn_time : float = 0
 #how fast each meteor will spawn (for 1 player, it's 1 second)
-var spawn_speed : float = 1
+var spawn_speed : float = 0.8
 
 #using an array will be much better and convenient, but I was running out of time :D
 @onready var player_1_score: Label = $player1score
@@ -45,17 +45,17 @@ func _ready() -> void:
 	else:
 		remove_child(player_1_score)
 	if Global.player2_id != 0:
-		spawn_speed = 0.8
+		spawn_speed = 0.6
 		player_2_score.modulate = Global.player2_color + Color(0.3, 0.3, 0.3)
 	else:
 		remove_child(player_2_score)
 	if Global.player3_id != 0:
-		spawn_speed = 0.6
+		spawn_speed = 0.4
 		player_3_score.modulate = Global.player3_color
 	else:
 		remove_child(player_3_score)
 	if Global.player4_id != 0:
-		spawn_speed = 0.4
+		spawn_speed = 0.25
 		player_4_score.modulate = Global.player4_color
 	else:
 		remove_child(player_4_score)
@@ -69,7 +69,7 @@ func _ready() -> void:
 	if Global.is_host:
 		random_seed = randi()
 		rng.seed = random_seed
-		window.addToDB("gameState", JSON.stringify({"game": "hoverGame", "state": "initialized", "randomSeed" : random_seed}))
+		window.addToDB("gameState", JSON.stringify({"game": "clickingGame", "state": "initialized", "randomSeed" : random_seed}))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -82,7 +82,7 @@ func _process(delta: float) -> void:
 	#time to spawn a meteor
 	if game_time.time_left < next_spawn_time:
 		var random_position = choose_random_meteor_position()
-		next_spawn_time -= 1
+		next_spawn_time -= spawn_speed
 		add_meteor(random_position)
 		
 	#black hole will scale up by +3 throughout the time limit
@@ -105,10 +105,10 @@ func choose_random_meteor_position():
 		else:
 			pos.x = -100
 			
-		pos.y = rng.randf_range(-50, 648 + 100)
+		pos.y = rng.randf_range(-100, 648 + 100)
 		
 	#choose x position
-	if rng.randi_range(0, 1) == 0:
+	else:
 		
 		#choose y position
 		if rng.randi_range(0, 1) == 0:
@@ -116,16 +116,22 @@ func choose_random_meteor_position():
 		else:
 			pos.y = -100
 			
-		pos.x = rng.randf_range(-50, 1152 + 100)
+		pos.x = rng.randf_range(-100, 1152 + 100)
 		
 	return pos
 
 #create a meteor object
 func add_meteor(random_position : Vector2):
-	var meteor = load("res://minigames/hover_game/meteor.tscn").instantiate()
-	add_child(meteor)
+	var meteor = load("res://minigames/clicking_game/meteor.tscn").instantiate()
 	meteor.global_position = random_position
 	meteor.name = str(rng.randi())
+	meteor.rotation_speed = rng.randf_range(0.015, 0.05)
+	if rng.randi_range(0, 1) == 0:
+		meteor.rotation_speed *= -1
+	add_child(meteor)
+	#decide on the rotation speed and side of the object
+	
+	
 
 #a meteor was hit (by you), destroy it and notify others
 func hit_meteor(meteor_object : Node2D):
@@ -187,28 +193,28 @@ func got_data(args):
 				if playerId == Global.player1_id:
 					player_1_score.text = "player 1: " + str(score)
 					if player_1_mouse == null:
-						player_1_mouse = load("res://minigames/hover_game/player_mouse.tscn").instantiate()
+						player_1_mouse = load("res://minigames/clicking_game/player_mouse.tscn").instantiate()
 						add_child(player_1_mouse)
 						player_1_mouse.modulate = Global.player1_color
 					player_1_mouse.global_position = Vector2(mouse_pos.x, mouse_pos.y)
 				elif playerId == Global.player2_id:
 					player_2_score.text = "player 2: " + str(score)
 					if player_2_mouse == null:
-						player_2_mouse = load("res://minigames/hover_game/player_mouse.tscn").instantiate()
+						player_2_mouse = load("res://minigames/clicking_game/player_mouse.tscn").instantiate()
 						add_child(player_2_mouse)
 						player_2_mouse.modulate = Global.player2_color + Color(0.3, 0.3, 0.3)
 					player_2_mouse.global_position = Vector2(mouse_pos.x, mouse_pos.y)
 				elif playerId == Global.player3_id:
 					player_3_score.text = "player 3: " + str(score)
 					if player_3_mouse == null:
-						player_3_mouse = load("res://minigames/hover_game/player_mouse.tscn").instantiate()
+						player_3_mouse = load("res://minigames/clicking_game/player_mouse.tscn").instantiate()
 						add_child(player_3_mouse)
 						player_3_mouse.modulate = Global.player3_color
 					player_3_mouse.global_position = Vector2(mouse_pos.x, mouse_pos.y)
 				elif playerId == Global.player4_id:
 					player_4_score.text = "player 4: " + str(score)
 					if player_4_mouse == null:
-						player_4_mouse = load("res://minigames/hover_game/player_mouse.tscn").instantiate()
+						player_4_mouse = load("res://minigames/clicking_game/player_mouse.tscn").instantiate()
 						add_child(player_4_mouse)
 						player_4_mouse.modulate = Global.player4_color
 					player_4_mouse.global_position = Vector2(mouse_pos.x, mouse_pos.y)

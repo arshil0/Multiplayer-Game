@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dsu2hpgsje074"]
 
-[ext_resource type="Script" path="res://minigames/hover_game/hover_game.gd" id="1_l80h7"]
-[ext_resource type="Texture2D" uid="uid://cxfgoamkqldhe" path="res://minigames/chess/sky-export.png" id="2_q7wkt"]
+[ext_resource type="Script" path="res://minigames/clicking_game/clicking_game.gd" id="1_jrbgc"]
+[ext_resource type="Texture2D" uid="uid://cxfgoamkqldhe" path="res://minigames/chess/sky-export.png" id="2_k3i3q"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwflr"]
 font_size = 32
@@ -28,7 +28,7 @@ radius = 9.0
 font_size = 46
 
 [node name="HoverGame" type="Node2D"]
-script = ExtResource("1_l80h7")
+script = ExtResource("1_jrbgc")
 
 [node name="player1score" type="Label" parent="."]
 offset_left = 40.0
@@ -66,7 +66,7 @@ label_settings = SubResource("LabelSettings_bwflr")
 z_index = -50
 offset_right = 1920.0
 offset_bottom = 1080.0
-texture = ExtResource("2_q7wkt")
+texture = ExtResource("2_k3i3q")
 
 [node name="black_hole" type="Node2D" parent="."]
 position = Vector2(576, 324)

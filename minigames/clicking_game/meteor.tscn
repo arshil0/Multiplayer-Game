@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://e34iamjxxrgy"]
 
-[ext_resource type="Script" path="res://minigames/hover_game/meteor.gd" id="1_0nbn5"]
+[ext_resource type="Script" path="res://minigames/clicking_game/meteor.gd" id="1_0nbn5"]
 
 [sub_resource type="Gradient" id="Gradient_ekqs8"]
 offsets = PackedFloat32Array(0, 0.514658, 1)

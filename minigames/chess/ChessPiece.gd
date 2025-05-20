@@ -20,25 +20,6 @@ enum PIECE_TYPES {
 	KNIGHT
 }
 
-static var color_sprites = {
-	"red" : {
-		"king" : preload("res://minigames/chess/pieces/king/red.png"),
-		"queen" : preload("res://minigames/chess/pieces/queen/red.png"),
-		"rook" : preload("res://minigames/chess/pieces/rook/red.png"),
-		"bishop" : preload("res://minigames/chess/pieces/bishop/red.png"),
-		"knight" : preload("res://minigames/chess/pieces/knight/red.png"),
-		"pawn" : preload("res://minigames/chess/pieces/pawn/red.png"),
-	},
-	"blue": {
-		"king" : preload("res://minigames/chess/pieces/king/blue.png"),
-		"queen" : preload("res://minigames/chess/pieces/queen/blue.png"),
-		"rook" : preload("res://minigames/chess/pieces/rook/blue.png"),
-		"bishop" : preload("res://minigames/chess/pieces/bishop/blue.png"),
-		"knight" : preload("res://minigames/chess/pieces/knight/blue.png"),
-		"pawn" : preload("res://minigames/chess/pieces/pawn/blue.png"),
-	}
-}
-
 
 var tween : Tween
 
@@ -76,5 +57,5 @@ func update_position_with_tween(tile_pos : Vector2):
 	
 	tween.tween_property(self, "global_position", tile_pos, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
-func change_color(color : String, piece_name : String):
-	sprite.texture = color_sprites.get(color).get(piece_name.to_lower())
+func change_color(color : Color):
+	sprite.modulate = color

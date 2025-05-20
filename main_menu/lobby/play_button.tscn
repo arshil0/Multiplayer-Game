@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdf4d6fxe3nkt"]
+
+[ext_resource type="Script" path="res://main_menu/lobby/play_button.gd" id="1_04suv"]
+
+[node name="PlayButton" type="Button"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -890.0
+offset_bottom = -610.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play Chess"
+script = ExtResource("1_04suv")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,11 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://dttxl284n1t6p"]
 
 [ext_resource type="Script" path="res://minigames/chess/pieces/bishop/bishop.gd" id="1_7paog"]
-[ext_resource type="Texture2D" uid="uid://ef1x62lwbms1" path="res://minigames/chess/pieces/bishop/red.png" id="2_5pjsv"]
+[ext_resource type="Texture2D" uid="uid://cvruqv38fqh03" path="res://minigames/chess/pieces/bishop/bishop.png" id="2_bqj1q"]
 
 [node name="Bishop" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_7paog")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_5pjsv")
-centered = false
+scale = Vector2(2, 2)
+texture = ExtResource("2_bqj1q")
+offset = Vector2(16, 16)

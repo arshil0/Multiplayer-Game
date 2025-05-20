@@ -1,0 +1,11 @@
+initializing: for the host to prepare the game so the other players can then join (like initializing chess pieces)
+initialized: the game is ready, everyone can join and then start
+
+joined: someone joined, handle it (comes with "joinerID")
+left: someone left, handle it (comes with "leaverID")
+
+bye: host left!
+
+
+chess:
+	lost: the player lost, remove their id from the list of player_ids

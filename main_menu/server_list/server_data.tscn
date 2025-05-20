@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://5kg0r3l3u31d"]
+
+[ext_resource type="Script" path="res://main_menu/server_list/server_data.gd" id="1_xa233"]
+[ext_resource type="PackedScene" uid="uid://dhueh8pyuthmb" path="res://main_menu/lobby/lobby.tscn" id="2_rkpkk"]
+
+[node name="ServerData" type="HBoxContainer"]
+theme_override_constants/separation = 150
+script = ExtResource("1_xa233")
+lobby_scene = ExtResource("2_rkpkk")
+
+[node name="server_name" type="Label" parent="."]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+text = "abcd"
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Join"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

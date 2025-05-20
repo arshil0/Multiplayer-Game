@@ -1,11 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://dewxecrrcyfv0"]
 
 [ext_resource type="Script" path="res://minigames/chess/pieces/queen/queen.gd" id="1_n1wot"]
-[ext_resource type="Texture2D" uid="uid://dnrwpuflmyxs4" path="res://minigames/chess/pieces/queen/red.png" id="2_2gi8j"]
+[ext_resource type="Texture2D" uid="uid://cwuei2iwadkhx" path="res://minigames/chess/pieces/queen/queen.png" id="2_7q0ws"]
 
 [node name="Queen" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_n1wot")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_2gi8j")
-centered = false
+scale = Vector2(2, 2)
+texture = ExtResource("2_7q0ws")
+offset = Vector2(16, 16)

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://chd4ibucmyfo0"
-path="res://.godot/imported/pawn.png-1d388d7cbeb240f86284b2c7439e849c.ctex"
+path="res://.godot/imported/pawn.png-91a2851ceb1d7b14c4d06f7f72305288.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://chess/pieces/pawn/pawn.png"
-dest_files=["res://.godot/imported/pawn.png-1d388d7cbeb240f86284b2c7439e849c.ctex"]
+source_file="res://minigames/chess/pieces/pawn/pawn.png"
+dest_files=["res://.godot/imported/pawn.png-91a2851ceb1d7b14c4d06f7f72305288.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

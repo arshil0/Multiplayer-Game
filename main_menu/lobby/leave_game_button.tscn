@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://m2ix0qe876ur"]
+
+[ext_resource type="Script" path="res://main_menu/lobby/leave_game_button.gd" id="1_rga3m"]
+
+[node name="LeaveGameButton" type="Button"]
+offset_left = 26.0
+offset_top = 74.0
+offset_right = 129.0
+offset_bottom = 105.0
+text = "Leave Game"
+script = ExtResource("1_rga3m")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://c5konct4kgruy"]
+[gd_scene load_steps=5 format=3 uid="uid://c5konct4kgruy"]
 
+[ext_resource type="Script" path="res://minigames/chess/chess.gd" id="1_6hf62"]
 [ext_resource type="Texture2D" uid="uid://cxfgoamkqldhe" path="res://minigames/chess/sky-export.png" id="1_b5ps3"]
 [ext_resource type="PackedScene" uid="uid://d3xrmaleoyy8y" path="res://minigames/chess/board.tscn" id="2_m5pj2"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_uacgu"]
+font_size = 32
+
 [node name="Chess" type="Node2D"]
+script = ExtResource("1_6hf62")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -50
@@ -13,3 +18,13 @@ texture = ExtResource("1_b5ps3")
 
 [node name="board" parent="." instance=ExtResource("2_m5pj2")]
 position = Vector2(576, 324)
+
+[node name="timer_label" type="Label" parent="."]
+offset_right = 181.0
+offset_bottom = 147.0
+label_settings = SubResource("LabelSettings_uacgu")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 20.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

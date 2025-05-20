@@ -22,12 +22,12 @@ func move(board : Board, pos_i : Vector2i, update_to_db : bool = true):
 	promote(board)
 	
 func promote(board : Board):
-	if direction == Vector2.UP and pos.y == 0:
+	if direction == Vector2.UP and board.get_tile(pos + Vector2i.UP) == null:
 		board.add_piece(piece_id, PIECE_TYPES.QUEEN, pos)
-	elif direction == Vector2.LEFT and pos.x == 0:
+	elif direction == Vector2.LEFT and board.get_tile(pos + Vector2i.LEFT) == null:
 		board.add_piece(piece_id, PIECE_TYPES.QUEEN, pos)
-	elif direction == Vector2.DOWN and pos.y == board.rows - 1:
+	elif direction == Vector2.DOWN and board.get_tile(pos + Vector2i.DOWN) == null:
 		board.add_piece(piece_id, PIECE_TYPES.QUEEN, pos)
-	elif direction == Vector2.RIGHT and pos.x == board.columns - 1:
+	elif direction == Vector2.RIGHT and board.get_tile(pos + Vector2i.RIGHT) == null:
 		board.add_piece(piece_id, PIECE_TYPES.QUEEN, pos)
 		

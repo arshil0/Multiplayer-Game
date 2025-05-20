@@ -1,11 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://ggeu6njn6qko"]
 
 [ext_resource type="Script" path="res://minigames/chess/pieces/knight/knight.gd" id="1_pygr1"]
-[ext_resource type="Texture2D" uid="uid://dv20j7cq117qk" path="res://minigames/chess/pieces/knight/red.png" id="2_3e1kc"]
+[ext_resource type="Texture2D" uid="uid://cxrfaiqoexulk" path="res://minigames/chess/pieces/knight/knight.png" id="2_a7gap"]
 
 [node name="Knight" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_pygr1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_3e1kc")
-centered = false
+scale = Vector2(2, 2)
+texture = ExtResource("2_a7gap")
+offset = Vector2(16, 16)

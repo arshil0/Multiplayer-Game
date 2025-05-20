@@ -1,0 +1,108 @@
+[gd_scene load_steps=3 format=3 uid="uid://0fuqjhhp1x1e"]
+
+[ext_resource type="Script" path="res://main_menu/main_menu.gd" id="1_34iyg"]
+[ext_resource type="PackedScene" uid="uid://dhueh8pyuthmb" path="res://main_menu/lobby/lobby.tscn" id="2_l5u0v"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_34iyg")
+lobby_scene = ExtResource("2_l5u0v")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 1154.0
+offset_bottom = 654.0
+
+[node name="menu_buttons" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="host" type="Button" parent="CenterContainer/menu_buttons"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Host game"
+
+[node name="join" type="Button" parent="CenterContainer/menu_buttons"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Join game"
+
+[node name="host_screen" type="MarginContainer" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/host_screen"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="back_from_host_screen" type="Button" parent="CenterContainer/host_screen/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Back"
+
+[node name="lobby_name_container" type="HBoxContainer" parent="CenterContainer/host_screen/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/host_screen/VBoxContainer/lobby_name_container"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Server name"
+
+[node name="lobby_name" type="LineEdit" parent="CenterContainer/host_screen/VBoxContainer/lobby_name_container"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="lobby_password_container" type="HBoxContainer" parent="CenterContainer/host_screen/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/host_screen/VBoxContainer/lobby_password_container"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "password (optional)
+"
+
+[node name="lobby_password" type="LineEdit" parent="CenterContainer/host_screen/VBoxContainer/lobby_password_container"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="host_lobby" type="Button" parent="CenterContainer/host_screen/VBoxContainer"]
+layout_mode = 2
+text = "Host Server"
+
+[node name="host_error_message" type="Label" parent="CenterContainer/host_screen/VBoxContainer"]
+modulate = Color(1, 0, 0.247059, 1)
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="join_screen" type="MarginContainer" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/join_screen"]
+layout_mode = 2
+
+[node name="join_back_button" type="Button" parent="CenterContainer/join_screen/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Back"
+
+[node name="servers" type="ScrollContainer" parent="CenterContainer/join_screen/VBoxContainer"]
+custom_minimum_size = Vector2(1080, 500)
+layout_mode = 2
+
+[node name="server_list" type="VBoxContainer" parent="CenterContainer/join_screen/VBoxContainer/servers"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[connection signal="pressed" from="CenterContainer/menu_buttons/host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CenterContainer/menu_buttons/join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="CenterContainer/host_screen/VBoxContainer/back_from_host_screen" to="." method="_on_back_from_host_screen_pressed"]
+[connection signal="pressed" from="CenterContainer/host_screen/VBoxContainer/host_lobby" to="." method="_on_host_lobby_pressed"]
+[connection signal="pressed" from="CenterContainer/join_screen/VBoxContainer/join_back_button" to="." method="_on_join_back_button_pressed"]

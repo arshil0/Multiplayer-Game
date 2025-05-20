@@ -1,0 +1,108 @@
+[gd_scene load_steps=9 format=3 uid="uid://dsu2hpgsje074"]
+
+[ext_resource type="Script" path="res://minigames/hover_game/hover_game.gd" id="1_l80h7"]
+[ext_resource type="Texture2D" uid="uid://cxfgoamkqldhe" path="res://minigames/chess/sky-export.png" id="2_q7wkt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bwflr"]
+font_size = 32
+
+[sub_resource type="Gradient" id="Gradient_l8n18"]
+offsets = PackedFloat32Array(0, 0.254072, 0.358306)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0.788235, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k0dls"]
+gradient = SubResource("Gradient_l8n18")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_sbi84"]
+offsets = PackedFloat32Array(0, 0.468647, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_83rbi"]
+radius = 9.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_k18v7"]
+font_size = 46
+
+[node name="HoverGame" type="Node2D"]
+script = ExtResource("1_l80h7")
+
+[node name="player1score" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 10.0
+offset_right = 207.0
+offset_bottom = 55.0
+text = "Player 1: 0"
+label_settings = SubResource("LabelSettings_bwflr")
+
+[node name="player2score" type="Label" parent="."]
+offset_left = 964.0
+offset_top = 10.0
+offset_right = 1123.0
+offset_bottom = 55.0
+text = "Player 2: 0"
+label_settings = SubResource("LabelSettings_bwflr")
+
+[node name="player3score" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 585.0
+offset_right = 120.0
+offset_bottom = 608.0
+text = "Player 3: 0"
+label_settings = SubResource("LabelSettings_bwflr")
+
+[node name="player4score" type="Label" parent="."]
+offset_left = 964.0
+offset_top = 585.0
+offset_right = 1123.0
+offset_bottom = 630.0
+text = "Player 4: 0"
+label_settings = SubResource("LabelSettings_bwflr")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -50
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_q7wkt")
+
+[node name="black_hole" type="Node2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Sprite2D" type="Sprite2D" parent="black_hole"]
+texture = SubResource("GradientTexture2D_k0dls")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="black_hole"]
+amount = 50
+lifetime = 5.0
+emission_shape = 1
+emission_sphere_radius = 65.0
+gravity = Vector2(0, 0)
+angular_velocity_min = 80.0
+angular_velocity_max = 280.0
+orbit_velocity_min = -1.0
+orbit_velocity_max = 1.0
+scale_amount_min = 5.0
+scale_amount_max = 10.0
+color_ramp = SubResource("Gradient_sbi84")
+
+[node name="black_hole_area" type="Area2D" parent="black_hole"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="black_hole/black_hole_area"]
+shape = SubResource("CircleShape2D_83rbi")
+
+[node name="game_time" type="Timer" parent="."]
+wait_time = 45.0
+one_shot = true
+autostart = true
+
+[node name="timer" type="Label" parent="."]
+offset_left = 527.0
+offset_right = 627.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_k18v7")
+horizontal_alignment = 1
+
+[connection signal="area_entered" from="black_hole/black_hole_area" to="." method="_on_black_hole_area_area_entered"]

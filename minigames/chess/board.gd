@@ -31,18 +31,20 @@ var chance_of_adding_piece : float = 0.55
 #keeps track of the pieces arrangement, each element is an array [piece_type, index]
 var piece_arrangement : Array
 var is_host : bool = false
+#keep track if you have lost the game, to skip your turn if it happens to be your turn somehow
+var lost : bool = false
 
 #MINI-MECHANICS VARIABLES
 #the chance to remove a block IN PERCENTAGE
 var chance_to_remove_block : int = 0;
 
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var window = Global.window
 	window.godot_got_data = got_data_callback
-	
-	print("ABOUT TO FETCH DATA")
+
 	Global.window.getData()
 	
 
@@ -57,6 +59,8 @@ func initialize_board():
 			board_column.append(tile_instance)
 		board.append(board_column)
 	board[0][0].board = self
+	
+		
 	
 	
 func prepare_player_nodes(server_data : Dictionary):
@@ -79,8 +83,22 @@ func add_piece(to_player_id : int, piece_type : ChessPiece.PIECE_TYPES, pos_i : 
 	var player_node = chess_pieces.get_node(str(to_player_id))
 	player_node.add_child(piece)
 	piece.piece_id = to_player_id
-	if to_player_id == player_ids[1]:
-		piece.change_color("blue", piece_name)
+	if to_player_id == player_ids[0]:
+		if to_player_id == Global.id:
+			Global.color = Color("ff3339")
+		piece.change_color(Color("ff3339"))
+	elif to_player_id == player_ids[1]:
+		if to_player_id == Global.id:
+			Global.color = Color.CADET_BLUE + Color(0.15, 0.15, 0)
+		piece.change_color(Color.CADET_BLUE)
+	elif to_player_id == player_ids[2]:
+		if to_player_id == Global.id:
+			Global.color = Color.BLUE_VIOLET + Color(0.15, 0.15, 0.15)
+		piece.change_color(Color.BLUE_VIOLET)
+	elif to_player_id == player_ids[3]:
+		if to_player_id == Global.id:
+			Global.color = Color.CHARTREUSE
+		piece.change_color(Color.CHARTREUSE)
 	if piece_type == ChessPiece.PIECE_TYPES.PAWN:
 		piece.direction = direction_of_movement
 		
@@ -107,7 +125,7 @@ func highlight(pos_i : Vector2i, direction : Vector2i = Vector2i.ZERO, piece_id 
 	var coord = pos_i + direction
 	if coordinates_inside_board(coord):
 		var tile = board[coord.x][coord.y]
-		if tile and tile.focused_piece == null:
+		if tile != null and tile.focused_piece == null:
 			highlighted_tiles.append(tile)
 			return tile.highlight_weak(piece_id, attacking)
 	return false
@@ -116,7 +134,7 @@ func highlight_only_attack(pos_i : Vector2i, direction : Vector2i = Vector2i.ZER
 	var coord = pos_i + direction
 	if coordinates_inside_board(coord):
 		var tile = board[coord.x][coord.y]
-		if tile and tile.focused_piece == null:
+		if tile != null and tile.focused_piece == null:
 			if tile.chess_piece:
 				highlighted_tiles.append(tile)
 				return tile.highlight_weak(piece_id, true)
@@ -137,6 +155,10 @@ func coordinates_inside_board(coordinates : Vector2i):
 	
 #move the piece
 func move_piece(from : Vector2i, to : Vector2i, update_to_db : bool = false):
+	#the player made a move, but it's not their turn (they missed the time), so just do nothing
+	if(update_to_db and !is_my_turn()):
+		return
+	get_parent().reset_timer()
 	var from_tile = board[from.x][from.y]
 	var to_tile = board[to.x][to.y]
 	
@@ -149,9 +171,8 @@ func move_piece(from : Vector2i, to : Vector2i, update_to_db : bool = false):
 	id_of_current_player = chess_pieces.get_child(index_of_current_player).name.to_int()
 	
 	chance_to_remove_block += 5;
-	print("PRINTING CHANCE")
-	print(chance_to_remove_block)
 	
+	#if I am the mover
 	if update_to_db:
 		var removing_a_tile := false
 		var chance = randi_range(0, 100)
@@ -159,7 +180,7 @@ func move_piece(from : Vector2i, to : Vector2i, update_to_db : bool = false):
 			var random_row = randi_range(0, rows - 1)
 			var random_column = randi_range(0, columns - 1)
 			var tile = board[random_column][random_row]
-			if tile and tile.chess_piece == null:
+			if tile != null and tile.chess_piece == null:
 				removing_a_tile = true
 				chance_to_remove_block = 0
 				board[random_column][random_row] = null
@@ -169,6 +190,35 @@ func move_piece(from : Vector2i, to : Vector2i, update_to_db : bool = false):
 		if !removing_a_tile:
 			Global.window.addToDB("gameState", JSON.stringify({"game": "Chess", "state": "move", "index_of_player_to_move": str(index_of_current_player), "id_of_mover" : str(id) , "last_move" : {"from_x" : from.x, "from_y" : from.y, "to_x" : to.x, "to_y" : to.y}}))
 
+#skips a move (someone didn't make a move and the timer ran out, or it was a lost player's turn)
+func skip_move(update_to_db : bool = false):
+	get_parent().reset_timer()
+	index_of_current_player = (index_of_current_player + 1) % player_ids.size()
+	id_of_current_player = chess_pieces.get_child(index_of_current_player).name.to_int()
+	
+	chance_to_remove_block += 5;
+	
+	#if I am the mover
+	if update_to_db:
+		var removing_a_tile := false
+		var chance = randi_range(0, 100)
+		if chance < chance_to_remove_block:
+			var random_row = randi_range(0, rows - 1)
+			var random_column = randi_range(0, columns - 1)
+			var tile = board[random_column][random_row]
+			if tile != null and tile.chess_piece == null:
+				removing_a_tile = true
+				chance_to_remove_block = 0
+				board[random_column][random_row] = null
+				tile.fall()
+				Global.window.addToDB("gameState", JSON.stringify({"game": "Chess", "state": "skip", "sub_state" : "remove_tile", "index_of_player_to_move": str(index_of_current_player), "id_of_mover" : str(id), "removed_tile_position" : {"x" : random_column, "y" : random_row}}))
+		
+		if !removing_a_tile:
+			Global.window.addToDB("gameState", JSON.stringify({"game": "Chess", "state": "skip", "index_of_player_to_move": str(index_of_current_player), "id_of_mover" : str(id)}))
+
+#checks if it's my turn currently
+func is_my_turn() -> bool:
+	return id_of_current_player == id
 	
 #return the tile given a position
 func get_tile(pos_i : Vector2i):
@@ -228,11 +278,34 @@ func arrange_pieces_on_board(player_id : int, start_position : int, go_by_row : 
 			pos1 += 1
 		else:
 			pos1 -= 1
+			
+#if someone lost, remove them from the game (so it can't be their turn)
+func remove_player(loser_id : int):
+	var upcoming_player_turn_id = chess_pieces.get_child((index_of_current_player + 1) % player_ids.size()).name.to_int()
+	player_ids.remove_at(player_ids.find(loser_id))
+	print("Currently it will be the turn of player")
+	print(upcoming_player_turn_id)
+	print("This player lost")
+	print(loser_id)
+	print("This is my id")
+	print(Global.id)
+	#if I lost and it became my turn, skip it
+	if loser_id == Global.id: 
+		print("I lost")
+		if upcoming_player_turn_id == Global.id:
+			skip_move(true)
+			print("skipping turn")
 	
 #JAVASCRIPT CODE
 func got_data(args):
 	var data = args[0]
 	data = JSON.parse_string(data)
+	if(!data.has("lobby_id")):
+		data = data[str(Global.lobby_id)]
+	
+	if Global.got_data(data) == "left":
+		get_node("chess_pieces").get_node(str(data.gameState.leaverID)).get_node("King").remove(self)
+	
 	if !initialized_board:
 		for playerID in data.players.keys():
 			print(playerID)
@@ -250,7 +323,7 @@ func got_data(args):
 		if Global.is_host:
 			is_host = true
 			create_piece_arrangement()
-			Global.window.addToDB("gameState", JSON.stringify({"game": "Chess", "state": "initialize", "index_of_player_to_move": str(index_of_current_player), "piece_arrangement": piece_arrangement}))
+			Global.window.addToDB("gameState", JSON.stringify({"game": "Chess", "state": "initialized", "index_of_player_to_move": str(index_of_current_player), "piece_arrangement": piece_arrangement}))
 		else:
 			piece_arrangement = data.gameState.piece_arrangement
 		
@@ -265,14 +338,17 @@ func got_data(args):
 			
 			var index = 0;
 			var piece_index = 0;
-			#setting pieces for player 1, also initialize the piece arangement
+			#setting pieces for player i, also initialize the piece arangement
 			#initializing from ABOVE!
 			if i == 0:
 				arrange_pieces_on_board(player_id, 0, false, true, Vector2i.DOWN)
+			#from below
 			elif i == 1:
 				arrange_pieces_on_board(player_id, rows - 1, false, false, Vector2i.UP)
+			#from left
 			elif i == 2:
 				arrange_pieces_on_board(player_id, 0, true, true, Vector2i.RIGHT)
+			#from right
 			elif i == 3:
 				arrange_pieces_on_board(player_id, columns - 1, true, false, Vector2i.LEFT)
 		
@@ -280,9 +356,9 @@ func got_data(args):
 		
 	#someone made a move, or something happened in the game
 	else:
-		print(data)
 		var gameState = data.gameState
 		if gameState.state == "move":
+			get_parent().reset_timer()
 			if gameState.id_of_mover.to_int() == id:
 				return
 			var last_move = gameState.last_move
@@ -293,17 +369,24 @@ func got_data(args):
 			
 			if from_tile and from_tile.chess_piece:
 				from_tile.chess_piece.move(self, to, false)
+		elif gameState.state == "skip":
+			get_parent().reset_timer()
+			if gameState.id_of_mover.to_int() == id:
+				return
+			skip_move(false)
+
 		
-			#now, check for any sub states
-			if gameState.has("sub_state"):
-				if gameState.sub_state == "remove_tile":
-					var removed_position = gameState.removed_tile_position;
-					var tile = board[removed_position.x][removed_position.y]
-					if tile and tile.chess_piece == null:
-						chance_to_remove_block = 0;
-						board[removed_position.x][removed_position.y] = null
-						tile.fall()
-			
+		if gameState.has("sub_state"):
+			if gameState.sub_state == "remove_tile":
+				var removed_position = gameState.removed_tile_position;
+				var tile = board[removed_position.x][removed_position.y]
+				if tile != null and tile.chess_piece == null:
+					chance_to_remove_block = 0;
+					board[removed_position.x][removed_position.y] = null
+					tile.fall()
+					
+
+		
 
 #regular chess board
 #add_piece(player1ID, ChessPiece.PIECE_TYPES.ROOK, Vector2i(0, 0))

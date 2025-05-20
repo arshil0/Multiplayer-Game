@@ -17,13 +17,13 @@ func _process(delta: float) -> void:
 
 func _on_button_pressed() -> void:
 	Global.is_host = true
-	Global.color = "red"
+	#Global.color = "red"
 	Global.window.getData()
 	
 func on_data_callback(data):
 	data = data[0]
 	data = JSON.parse_string(data)
-	Global.color = "blue"
+	#Global.color = "blue"
 	var gameData = data.get("gameState")
 	if gameData:
 		if data.players.size() > 1 and gameData.game == "Chess" and gameData.state == "initialize":
@@ -34,4 +34,6 @@ func on_data_callback(data):
 			Global.is_host = false
 			text.text = "[font_size=36][color=red][center]No one else seems to be online[/center][/color][/font_size]"
 		else:
+			#I am the host!
+			Global.window.delete_lobby_on_host_leave()
 			get_tree().change_scene_to_file("res://minigames/chess/chess.tscn")

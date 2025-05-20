@@ -1,11 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://snfkm7xqle27"]
 
 [ext_resource type="Script" path="res://minigames/chess/pieces/pawn/pawn.gd" id="1_yli0u"]
-[ext_resource type="Texture2D" uid="uid://m5ya1ydm06n4" path="res://minigames/chess/pieces/pawn/red.png" id="2_2tyi3"]
+[ext_resource type="Texture2D" uid="uid://chd4ibucmyfo0" path="res://minigames/chess/pieces/pawn/pawn.png" id="2_8ktml"]
 
 [node name="Pawn" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_yli0u")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_2tyi3")
-centered = false
+modulate = Color(1, 0.2, 0.223529, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("2_8ktml")
+offset = Vector2(16, 16)

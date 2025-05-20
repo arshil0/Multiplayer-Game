@@ -22,6 +22,12 @@ func remove(board : Board):
 	var number_of_players = get_parent().get_parent().get_child_count()
 	
 	if number_of_players == 2:
-		pass
-		#do something
+		get_tree().change_scene_to_file("res://main_menu/lobby/lobby.tscn")
+	elif number_of_players > 2:
+		#only the piece holder should call this method
+		var grandparent = get_parent().get_parent()
+		board.remove_player(piece_id)
+		
+		grandparent.remove_child(grandparent.get_node(str(piece_id)))
+		#Global.window.addToDB("gameState/notification", JSON.stringify({"state" : "lost", "loserID" : piece_id}))
 	super(board)
